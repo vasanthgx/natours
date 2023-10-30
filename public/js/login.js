@@ -21,8 +21,10 @@ export const login = async (email, password) => {
     //we link the axios cdn in the base.pug file
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v1/users/login',
+      // url: 'http://127.0.0.1:3000/api/v1/users/login',//development url
       //   url: 'http://localhost:3000/api/v1/users/login',
+      url: '/api/v1/users/login', //relative url
+      //since our API and website are hosted on the same server this url will work in production
       data: {
         email,
         password,
@@ -34,7 +36,7 @@ export const login = async (email, password) => {
         location.assign('/');
       }, 1500); //after 1500 milliseconds
     }
-    console.log(res);
+    // console.log(res);
   } catch (err) {
     // console.log(err.response.data);
     showAlert('error', err.response.data.message);
@@ -45,7 +47,9 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v1/users/logout',
+      // url: 'http://127.0.0.1:3000/api/v1/users/logout',//dev url
+      url: '/api/v1/users/logout', //prod url
+      //relative url - since both the website and API are hosted on the same server.
     });
     //making sure that the page  is reloaded so that invalid cookie is sent back to the server
     if (res.data.status === 'success') location.reload(true);

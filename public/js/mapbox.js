@@ -5,9 +5,9 @@
 
 // console.log(locations);
 
-const displayMap = (locations) => {
+export const displayMap = (locations) => {
   mapboxgl.accessToken =
-    'pk.eyJ1IjoidmFzYW50aGd4IiwiYSI6ImNsbzV1MmFkajBjd2Uyc253bjNkY2NjMzkifQ.OJXD5xHH8kSCwIyjlraKhw';
+    'pk.eyJ1IjoidmFzYW50aGd4IiwiYSI6ImNsb2NvcmMwdjAwNXEya3J3bmlmY29wenIifQ.xG_Af2Jufx7Yh56QrGjNwg';
   var map = new mapboxgl.Map({
     container: 'map',
     //this container will look for an id#map within our map section.[ which we have #map]
@@ -55,7 +55,6 @@ const displayMap = (locations) => {
   });
 };
 
-module.exports = displayMap;
 /////////////////////////////////////////////////////////////////////////
 /* eslint-disable */
 // export const displayMap = (locations) => {

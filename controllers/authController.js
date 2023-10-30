@@ -108,7 +108,7 @@ exports.login = catchAsync(async (req, res, next) => {
   //2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select('+password'); //the '+ ' is used to re select the 'password' object
   //since it was set to false.
-  console.log(user);
+  // console.log(user);
 
   //correctPassword which we defined in the userModel.js is an instance method and is
   //available to all the documents of a collectoin.

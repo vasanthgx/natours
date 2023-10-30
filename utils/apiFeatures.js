@@ -19,7 +19,7 @@ class APIFeatures {
 
   sort() {
     if (this.queryString.sort) {
-      console.log(this.queryString.sort); // to have a look at the parameter pollution we tried in lecture 146.
+      // console.log(this.queryString.sort); // to have a look at the parameter pollution we tried in lecture 146.
 
       const sortBy = this.queryString.sort.split(',').join(' ');
       // console.log(sortBy);
