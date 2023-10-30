@@ -27,7 +27,7 @@ const signToken = (id) =>
 //next the above function is an async function and  we should wrap it in try / catch block
 //for which we have the catchAsync() function.
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -36,8 +36,16 @@ const createSendToken = (user, statusCode, res) => {
     ), //converting 90 days to milliseconds
     // secure: true, //this indicates that the secure will be sent over a secure connection -https
     httpOnly: true, //this ensures that the cookie cannot be modified by the browser.
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https', //Note this line of refactored code
+    //tests whether the connection is true or note and the cookie with the JWT  will be sent as a response object ONLY
+    // if the value of  the property 'secure' is true. Note to have access to the request object we add the parameter
+    //'req' to the function.
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  // if (req.secure || req.headers['x-forwarded-proto'] === 'https')
+  // cookieOptions.secure = true; // we can refactor this to
+  // cookieOptions.secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  //Now this can be included in the cookieOptions{} object itself.
 
   //res.cookie(name of the cookie, itsvalue, options{})
   res.cookie('jwt', token, cookieOptions);
@@ -73,14 +81,14 @@ exports.signup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/me`;
   //getting the protocol(http of https) and the host programmatically
   //depending upon whether we are in development or production
-  console.log(url);
+  // console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   //creating a JWT for signup
   // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
   //   expiresIn: process.env.JWT_EXPIRES_IN,
   // });
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
   // const token = signToken(newUser._id);
 
   //next we send the response to the client with 201[ status code for user created]
@@ -122,7 +130,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //3) if everything ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
   // const token = signToken(user._id);
   // res.status(200).json({
   //   status: 'success',
@@ -322,7 +330,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   ///this is done through a middleware pre('save') in the userModel.js file
 
   //4) log the user in , send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
   // const token = signToken(user._id);
   // res.status(200).json({
   //   status: 'success',
@@ -361,5 +369,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //we will export these lines into its own function "createSendToken" and refactor this and the other
   //middleware functions accordingly
 
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
