@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -28,6 +29,25 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 ///GLOBAL MIDDLEWARES
+//1) Implement CORS -for simple requests[GET and POST]
+app.use(cors()); //this returns a middleware function
+//which adds certain headers to our response
+//header 1)
+//Access-Control-Allow-Origin * /////this allows for all requests no matter where they are coming from.
+//this is ideal for everyone to consume our api.
+//////////////////////////
+//but if we  have our API and web application on different domains
+//like example.com/api  and front end as example1.com
+// app.use({
+//   origin: 'https://www.example1.com', //this will allow this site access to the API
+// });
+
+//2) Implement CORS -for non-simple requests[PATCH,  DELETE, PUT and cookies and the use of non-standard headers]
+
+app.options('*', cors()); //'*' means it is for all routes
+//app.options('/api/v1/tours/:id', cors())// this enables only one particular tour that
+//can have a non - simple request.
+
 //Serving Static Files
 app.use(express.static(path.join(__dirname, 'public')));
 
