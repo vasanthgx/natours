@@ -32,8 +32,7 @@ module.exports = class Email {
 
       const transporter = nodemailer.createTransport(
         new Transport({
-          apiKey:
-            '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',
+          apiKey: process.env.BREVO_PASSWORD,
         }),
       );
       return transporter;
