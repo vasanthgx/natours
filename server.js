@@ -45,11 +45,11 @@ process.on('unhandledRejection', (err) => {
 });
 
 process.on('SIGTERM', () => {
-  console.log(':rofl: SIGTERM RECEIVED. Shutting down gracefully');
+  console.log(' SIGTERM RECEIVED. Shutting down gracefully');
   server.close(() => {
     //this ensures that the server is not closed abruptly
     //but to finish all pending requests and then shut down.
-    console.log(':smi::100:Process terminated');
+    console.log('Process terminated');
     // here we do not run -process.exit(1 ) - since the SIGTERM signal
     //will itself shut down the application
   });

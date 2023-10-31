@@ -5,6 +5,14 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const factory = require('./handlerFunction');
 
+exports.alerts = (req, res, next) => {
+  const { alert } = req.query;
+  if (alert === 'booking')
+    res.locals.alert =
+      "Your booking was successful! Please check your email for a confirmation. If your booking doesn't show up immediatley, please come back later. ";
+  next();
+};
+
 exports.getOverview = catchAsync(async (req, res, next) => {
   // 1. get tour data from collections
   const tours = await Tour.find();

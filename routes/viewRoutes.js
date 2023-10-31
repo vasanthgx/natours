@@ -32,12 +32,9 @@ const router = express.Router();
 //finally we want the overview page to be displayed right at the root route
 //so we change '/overview' to '/'.
 
-router.get(
-  '/',
-  bookingController.createBookingCheckout,
-  authController.isLoggedIn,
-  viewsController.getOverview,
-);
+router.use(viewsController.alerts);
+
+router.get('/', authController.isLoggedIn, viewsController.getOverview);
 
 /// Router for tour
 
